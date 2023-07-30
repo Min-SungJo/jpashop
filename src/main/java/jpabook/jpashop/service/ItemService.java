@@ -16,8 +16,17 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     @Transactional
-    public void saveItem(Item item) {
+    public Long saveItem(Item item) {
+        validateDuplicateItem(item); // 중복 상품 검증
         itemRepository.save(item);
+        return item.getId();
+    }
+
+    private void validateDuplicateItem(Item item) {
+        List<Item> findItems = itemRepository.findByName(item.getName());
+        if(!findItems.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 상품입니다.");
+        }
     }
 
     public List<Item> findItems() {
