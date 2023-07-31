@@ -18,7 +18,7 @@ public class ItemService {
 
     @Transactional
     public Long saveItem(Item item) {
-        validateDuplicateItem(item); // 중복 상품 검증
+//        validateDuplicateItem(item); // 중복 상품 검증
         itemRepository.save(item);
         return item.getId();
     }
@@ -32,12 +32,12 @@ public class ItemService {
         findItem.setStockQuantity(itemDto.getStockQuantity());
     }
 
-    private void validateDuplicateItem(Item item) {
-        List<Item> findItems = itemRepository.findByName(item.getName());
-        if(!findItems.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 상품입니다.");
-        }
-    }
+//    private void validateDuplicateItem(Item item) {
+//        List<Item> findItems = itemRepository.findByName(item.getName());
+//        if(!findItems.isEmpty()) {
+//            throw new IllegalStateException("이미 존재하는 상품입니다.");
+//        }
+//    }
 
     public List<Item> findItems() {
         return itemRepository.findAll();
