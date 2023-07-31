@@ -1,5 +1,6 @@
 package jpabook.jpashop.service;
 
+import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,15 @@ public class ItemService {
         return item.getId();
     }
 
+    @Transactional
+    public void updateItem(UpdateItemDto itemDto) {
+        Item findItem = itemRepository.findOne(itemDto.getItemId());
+        // findItem.change(파라미터); -> setter 대신에 따라 메서드를 생성하여 값을 변경하는 것을 권장
+        findItem.setName(itemDto.getName());
+        findItem.setPrice(itemDto.getPrice());
+        findItem.setStockQuantity(itemDto.getStockQuantity());
+    }
+
     private void validateDuplicateItem(Item item) {
         List<Item> findItems = itemRepository.findByName(item.getName());
         if(!findItems.isEmpty()) {
@@ -32,6 +42,7 @@ public class ItemService {
     public List<Item> findItems() {
         return itemRepository.findAll();
     }
+
     public Item findOne(Long itemId) {
         return itemRepository.findOne(itemId);
     }
