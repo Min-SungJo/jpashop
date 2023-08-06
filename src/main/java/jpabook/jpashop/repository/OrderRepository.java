@@ -110,6 +110,17 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch  o.delivery d", Order.class
+                ).
+                setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
     public List<Order> findAllWithItem() { //단, 1 대 다 fetch join 은 페이징이 불가함
         return em.createQuery(
                 "select distinct o from Order o" +
